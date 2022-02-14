@@ -1,0 +1,204 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 500px;
+            height: 500px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "Bena.\u0027", "label": "Bena.\u0027", "shape": "dot"}, {"id": "4forash", "label": "4forash", "shape": "dot"}, {"id": "Dedi Budiyanto\u0027", "label": "Dedi Budiyanto\u0027", "shape": "dot"}, {"id": "mhas\u0027", "label": "mhas\u0027", "shape": "dot"}, {"id": "pikabay", "label": "pikabay", "shape": "dot"}, {"id": "aadisp", "label": "aadisp", "shape": "dot"}, {"id": "moviemenfes", "label": "moviemenfes", "shape": "dot"}, {"id": "fzurriyatina", "label": "fzurriyatina", "shape": "dot"}, {"id": "ShinodaNathan", "label": "ShinodaNathan", "shape": "dot"}, {"id": "kthdmtf", "label": "kthdmtf", "shape": "dot"}, {"id": "Deti Karmila\u0027", "label": "Deti Karmila\u0027", "shape": "dot"}, {"id": "Hendaru Adam\u0027", "label": "Hendaru Adam\u0027", "shape": "dot"}, {"id": "No name\u0027", "label": "No name\u0027", "shape": "dot"}, {"id": "oops!!\u0027", "label": "oops!!\u0027", "shape": "dot"}, {"id": "atika_rini", "label": "atika_rini", "shape": "dot"}, {"id": "BastyanBram", "label": "BastyanBram", "shape": "dot"}, {"id": "ER.\u0027", "label": "ER.\u0027", "shape": "dot"}, {"id": "IndiHomeCare\u0027", "label": "IndiHomeCare\u0027", "shape": "dot"}, {"id": "prim\u0027", "label": "prim\u0027", "shape": "dot"}, {"id": "Uke Marchum\u0027", "label": "Uke Marchum\u0027", "shape": "dot"}, {"id": "Joji\u0027", "label": "Joji\u0027", "shape": "dot"}, {"id": "Anugrah\u0027", "label": "Anugrah\u0027", "shape": "dot"}, {"id": "parmenbloko", "label": "parmenbloko", "shape": "dot"}, {"id": "naorissy", "label": "naorissy", "shape": "dot"}, {"id": "#garislucu\u0027", "label": "#garislucu\u0027", "shape": "dot"}, {"id": "Nur C\u0027", "label": "Nur C\u0027", "shape": "dot"}, {"id": "pika\u0027", "label": "pika\u0027", "shape": "dot"}, {"id": "IndiHomeCare", "label": "IndiHomeCare", "shape": "dot"}, {"id": "M\u0027", "label": "M\u0027", "shape": "dot"}, {"id": "Lia\u0027", "label": "Lia\u0027", "shape": "dot"}, {"id": "Novi Miranti\u0027", "label": "Novi Miranti\u0027", "shape": "dot"}, {"id": "Uppy\u0027", "label": "Uppy\u0027", "shape": "dot"}, {"id": "TERRE\u0027", "label": "TERRE\u0027", "shape": "dot"}, {"id": "Suci\u0027", "label": "Suci\u0027", "shape": "dot"}, {"id": "Kurniawan.muhammad\u0027", "label": "Kurniawan.muhammad\u0027", "shape": "dot"}, {"id": "Blackhole\u0027", "label": "Blackhole\u0027", "shape": "dot"}, {"id": "aji \ud83d\uddff\u0027", "label": "aji \ud83d\uddff\u0027", "shape": "dot"}, {"id": "Fe Apriyani\u0027", "label": "Fe Apriyani\u0027", "shape": "dot"}, {"id": "lip\u00e9\u0027", "label": "lip\u00e9\u0027", "shape": "dot"}, {"id": "Nayah\u0027", "label": "Nayah\u0027", "shape": "dot"}, {"id": "patiencefull\u0027", "label": "patiencefull\u0027", "shape": "dot"}, {"id": "Goodness\u0027", "label": "Goodness\u0027", "shape": "dot"}, {"id": "Irvan\u0027", "label": "Irvan\u0027", "shape": "dot"}, {"id": "Bram Bastyan\u0027", "label": "Bram Bastyan\u0027", "shape": "dot"}, {"id": "v_taehyung2525", "label": "v_taehyung2525", "shape": "dot"}, {"id": "FReni Agustine\u0027", "label": "FReni Agustine\u0027", "shape": "dot"}, {"id": "agis\u269c \u2022 ia banget\u0027", "label": "agis\u269c \u2022 ia banget\u0027", "shape": "dot"}, {"id": "kino suki\u0027", "label": "kino suki\u0027", "shape": "dot"}, {"id": "Cantika\u0027", "label": "Cantika\u0027", "shape": "dot"}, {"id": "Met Tio\u0027", "label": "Met Tio\u0027", "shape": "dot"}, {"id": "Bitna\u0027", "label": "Bitna\u0027", "shape": "dot"}, {"id": "Vika Agustin\u0027", "label": "Vika Agustin\u0027", "shape": "dot"}, {"id": "Biznet Home\u0027", "label": "Biznet Home\u0027", "shape": "dot"}, {"id": "Rasyid\u0027", "label": "Rasyid\u0027", "shape": "dot"}, {"id": "Firman Firdaus\u0027", "label": "Firman Firdaus\u0027", "shape": "dot"}, {"id": "Nina Kusuma Putri\u0027", "label": "Nina Kusuma Putri\u0027", "shape": "dot"}, {"id": "A86_Crypto\ud83d\ude80\ud83d\ude80\ud83d\ude80\u0027", "label": "A86_Crypto\ud83d\ude80\ud83d\ude80\ud83d\ude80\u0027", "shape": "dot"}, {"id": "Reno S\u0027", "label": "Reno S\u0027", "shape": "dot"}, {"id": "SartonoHutomo", "label": "SartonoHutomo", "shape": "dot"}, {"id": "kitamogumogu\u0027", "label": "kitamogumogu\u0027", "shape": "dot"}, {"id": "minsungg123490\u0027", "label": "minsungg123490\u0027", "shape": "dot"}, {"id": "N a e l \u2744\ufe0f\u0027", "label": "N a e l \u2744\ufe0f\u0027", "shape": "dot"}, {"id": "istiqomah\u0027", "label": "istiqomah\u0027", "shape": "dot"}, {"id": "MySumatera", "label": "MySumatera", "shape": "dot"}, {"id": "Hendaru_Adam", "label": "Hendaru_Adam", "shape": "dot"}, {"id": "gugumakochi", "label": "gugumakochi", "shape": "dot"}, {"id": "dedekara\u0027", "label": "dedekara\u0027", "shape": "dot"}, {"id": "\ud83e\udd8b\u0027", "label": "\ud83e\udd8b\u0027", "shape": "dot"}, {"id": "Sugianto\u0027", "label": "Sugianto\u0027", "shape": "dot"}, {"id": "\ud835\udcd4\ud835\udcff\ud835\udcea \ud835\udcd1\ud835\udcea\ud835\udced\ud835\udcf2 \ud835\udcdd\ud835\udcf8\ud835\udcf8\ud835\udcfb\u0027", "label": "\ud835\udcd4\ud835\udcff\ud835\udcea \ud835\udcd1\ud835\udcea\ud835\udced\ud835\udcf2 \ud835\udcdd\ud835\udcf8\ud835\udcf8\ud835\udcfb\u0027", "shape": "dot"}, {"id": "BabyRaa", "label": "BabyRaa", "shape": "dot"}, {"id": "AmarMulky\u0027", "label": "AmarMulky\u0027", "shape": "dot"}, {"id": "wisnu_satyadh", "label": "wisnu_satyadh", "shape": "dot"}, {"id": "Achel08\u0027", "label": "Achel08\u0027", "shape": "dot"}, {"id": "Jey\u0027", "label": "Jey\u0027", "shape": "dot"}, {"id": "Negeri seribu mimpi\u0027", "label": "Negeri seribu mimpi\u0027", "shape": "dot"}, {"id": "Adi\u0027", "label": "Adi\u0027", "shape": "dot"}, {"id": "diniadeliafr", "label": "diniadeliafr", "shape": "dot"}, {"id": "banana\ud83c\udf6e\u0027", "label": "banana\ud83c\udf6e\u0027", "shape": "dot"}, {"id": "Enida Aminah\u0027", "label": "Enida Aminah\u0027", "shape": "dot"}, {"id": "Jimmy Legoh\u0027", "label": "Jimmy Legoh\u0027", "shape": "dot"}, {"id": "rega\u0027", "label": "rega\u0027", "shape": "dot"}, {"id": "Nabalah Khusaini\u0027", "label": "Nabalah Khusaini\u0027", "shape": "dot"}, {"id": "Webhead\ud83d\udd77\ufe0f\ud83d\udd78\ufe0f\u0027", "label": "Webhead\ud83d\udd77\ufe0f\ud83d\udd78\ufe0f\u0027", "shape": "dot"}, {"id": "izza_na19", "label": "izza_na19", "shape": "dot"}, {"id": "crosemoon", "label": "crosemoon", "shape": "dot"}, {"id": "@lohadika\u0027", "label": "@lohadika\u0027", "shape": "dot"}, {"id": "indihomeborneo", "label": "indihomeborneo", "shape": "dot"}, {"id": "Qomah17\u0027", "label": "Qomah17\u0027", "shape": "dot"}, {"id": "pir_gs", "label": "pir_gs", "shape": "dot"}, {"id": "THE_NUGO", "label": "THE_NUGO", "shape": "dot"}, {"id": "Awan\u0027", "label": "Awan\u0027", "shape": "dot"}, {"id": "Akilud\u0027", "label": "Akilud\u0027", "shape": "dot"}, {"id": "moonareas", "label": "moonareas", "shape": "dot"}, {"id": "AnotherWays\u0027", "label": "AnotherWays\u0027", "shape": "dot"}, {"id": "Arkatama_\u0027", "label": "Arkatama_\u0027", "shape": "dot"}, {"id": "IndihomeJTD", "label": "IndihomeJTD", "shape": "dot"}, {"id": "mr ling\u0027", "label": "mr ling\u0027", "shape": "dot"}, {"id": "racarissas", "label": "racarissas", "shape": "dot"}, {"id": "awesome_cobyist", "label": "awesome_cobyist", "shape": "dot"}, {"id": "Bababeyaw\u0027", "label": "Bababeyaw\u0027", "shape": "dot"}, {"id": "photomath pro player\u0027", "label": "photomath pro player\u0027", "shape": "dot"}, {"id": "Hartono Cahdeso\u0027", "label": "Hartono Cahdeso\u0027", "shape": "dot"}, {"id": "IndiHome Jakarta Utara\u0027", "label": "IndiHome Jakarta Utara\u0027", "shape": "dot"}, {"id": "Ike Rianasari\u0027", "label": "Ike Rianasari\u0027", "shape": "dot"}, {"id": "antarada\u0027", "label": "antarada\u0027", "shape": "dot"}, {"id": "Lora Kandhi Swati\u0027", "label": "Lora Kandhi Swati\u0027", "shape": "dot"}, {"id": "IndiHome", "label": "IndiHome", "shape": "dot"}, {"id": "Keranjang Tokopedia \u0026 Shopee\u0027", "label": "Keranjang Tokopedia \u0026 Shopee\u0027", "shape": "dot"}, {"id": "jokowi", "label": "jokowi", "shape": "dot"}, {"id": "nrl\u0027", "label": "nrl\u0027", "shape": "dot"}, {"id": "Fauziah Zurriyatina\u0027", "label": "Fauziah Zurriyatina\u0027", "shape": "dot"}, {"id": "Rini eA q Reny\u0027", "label": "Rini eA q Reny\u0027", "shape": "dot"}, {"id": "L\u0027", "label": "L\u0027", "shape": "dot"}, {"id": "cintia\u0027", "label": "cintia\u0027", "shape": "dot"}, {"id": "HELMETIUM\u0027", "label": "HELMETIUM\u0027", "shape": "dot"}, {"id": "not paley\u0027", "label": "not paley\u0027", "shape": "dot"}, {"id": "afiffarras_", "label": "afiffarras_", "shape": "dot"}, {"id": "pecintamochi\u0027", "label": "pecintamochi\u0027", "shape": "dot"}, {"id": "Afsana Amirah\u0027", "label": "Afsana Amirah\u0027", "shape": "dot"}, {"id": "abcdefge", "label": "abcdefge", "shape": "dot"}, {"id": "kaniaaa \u2022 rest\u0027", "label": "kaniaaa \u2022 rest\u0027", "shape": "dot"}, {"id": "Andri Mawardi\u0027", "label": "Andri Mawardi\u0027", "shape": "dot"}, {"id": "zkrsyd", "label": "zkrsyd", "shape": "dot"}, {"id": "bvdisan", "label": "bvdisan", "shape": "dot"}, {"id": "Ipriiiilll\u0027", "label": "Ipriiiilll\u0027", "shape": "dot"}, {"id": "Rina Sulisty\u0027", "label": "Rina Sulisty\u0027", "shape": "dot"}, {"id": "ridoremiii", "label": "ridoremiii", "shape": "dot"}, {"id": "Tirta Jaya\u0027", "label": "Tirta Jaya\u0027", "shape": "dot"}, {"id": "Sylvaaaaa29\u0027", "label": "Sylvaaaaa29\u0027", "shape": "dot"}, {"id": "WillyJUVE5", "label": "WillyJUVE5", "shape": "dot"}, {"id": "ariska damayanti\u0027", "label": "ariska damayanti\u0027", "shape": "dot"}, {"id": "RatihRa49418868", "label": "RatihRa49418868", "shape": "dot"}, {"id": "Awal Zaputra\u0027", "label": "Awal Zaputra\u0027", "shape": "dot"}, {"id": "dewatrending\u0027", "label": "dewatrending\u0027", "shape": "dot"}, {"id": "krisnawibisono1", "label": "krisnawibisono1", "shape": "dot"}, {"id": "Apasih\u0027", "label": "Apasih\u0027", "shape": "dot"}, {"id": "vinsmwoke", "label": "vinsmwoke", "shape": "dot"}, {"id": "ridha akbar kusuma\u0027", "label": "ridha akbar kusuma\u0027", "shape": "dot"}, {"id": "Dinda Ayu Oktafiana\u0027", "label": "Dinda Ayu Oktafiana\u0027", "shape": "dot"}, {"id": "Anang Hariyansah\u0027", "label": "Anang Hariyansah\u0027", "shape": "dot"}, {"id": "\u2022gooreumseng\u2022\u0027", "label": "\u2022gooreumseng\u2022\u0027", "shape": "dot"}, {"id": "shshsjung", "label": "shshsjung", "shape": "dot"}, {"id": "TirtaJa19", "label": "TirtaJa19", "shape": "dot"}, {"id": "Aa dyanz\u0027", "label": "Aa dyanz\u0027", "shape": "dot"}, {"id": "jokiberuang", "label": "jokiberuang", "shape": "dot"}, {"id": "ShortPants\u0027", "label": "ShortPants\u0027", "shape": "dot"}, {"id": "Widhi Atmoko\u0027", "label": "Widhi Atmoko\u0027", "shape": "dot"}, {"id": "Seargeant\u0027", "label": "Seargeant\u0027", "shape": "dot"}, {"id": "sang.warior\u0027", "label": "sang.warior\u0027", "shape": "dot"}, {"id": "Morning31711750", "label": "Morning31711750", "shape": "dot"}, {"id": "Indirawati\u0027", "label": "Indirawati\u0027", "shape": "dot"}, {"id": "server id\u0027", "label": "server id\u0027", "shape": "dot"}, {"id": "RIHAECHAN", "label": "RIHAECHAN", "shape": "dot"}, {"id": "roserollinz", "label": "roserollinz", "shape": "dot"}, {"id": "DjuraganH", "label": "DjuraganH", "shape": "dot"}, {"id": "CelanaGemess", "label": "CelanaGemess", "shape": "dot"}, {"id": "wann tap\u0027", "label": "wann tap\u0027", "shape": "dot"}, {"id": "\u2727\u0027", "label": "\u2727\u0027", "shape": "dot"}, {"id": "PIR\u0027", "label": "PIR\u0027", "shape": "dot"}, {"id": "Desy\u0027", "label": "Desy\u0027", "shape": "dot"}, {"id": "rheeechan", "label": "rheeechan", "shape": "dot"}, {"id": "alfanfrdn", "label": "alfanfrdn", "shape": "dot"}, {"id": "Razki0807\u0027", "label": "Razki0807\u0027", "shape": "dot"}, {"id": "taripermata\u0027", "label": "taripermata\u0027", "shape": "dot"}, {"id": "ridhaakbarkusum", "label": "ridhaakbarkusum", "shape": "dot"}, {"id": "ninakusumaputri", "label": "ninakusumaputri", "shape": "dot"}, {"id": "Wiwied Hirasah\u0027", "label": "Wiwied Hirasah\u0027", "shape": "dot"}, {"id": "martina\u0027", "label": "martina\u0027", "shape": "dot"}, {"id": "zyaa\u2740 k/ia\u0027", "label": "zyaa\u2740 k/ia\u0027", "shape": "dot"}, {"id": "Tin || ia\u0027", "label": "Tin || ia\u0027", "shape": "dot"}, {"id": "Atkrn\u0027", "label": "Atkrn\u0027", "shape": "dot"}, {"id": "al.\u0027", "label": "al.\u0027", "shape": "dot"}, {"id": "UKIE\u0027", "label": "UKIE\u0027", "shape": "dot"}, {"id": "thefIasshh", "label": "thefIasshh", "shape": "dot"}, {"id": "tiaa 97\u0027", "label": "tiaa 97\u0027", "shape": "dot"}, {"id": "Ratih Rahmawati\u0027", "label": "Ratih Rahmawati\u0027", "shape": "dot"}, {"id": "Prince_Anang", "label": "Prince_Anang", "shape": "dot"}, {"id": "ivryxvra\u0027", "label": "ivryxvra\u0027", "shape": "dot"}, {"id": "Yoshua_Gultom", "label": "Yoshua_Gultom", "shape": "dot"}, {"id": "Madevy\u0027", "label": "Madevy\u0027", "shape": "dot"}, {"id": "agita ratna\u0027", "label": "agita ratna\u0027", "shape": "dot"}, {"id": "YGG\u0027", "label": "YGG\u0027", "shape": "dot"}, {"id": "UselessPerson.\u0027", "label": "UselessPerson.\u0027", "shape": "dot"}, {"id": "jun \ud83d\udd96\u0027", "label": "jun \ud83d\udd96\u0027", "shape": "dot"}, {"id": "ariya\u0027", "label": "ariya\u0027", "shape": "dot"}, {"id": "Budi\u0027", "label": "Budi\u0027", "shape": "dot"}, {"id": "ieroel\u0027", "label": "ieroel\u0027", "shape": "dot"}, {"id": "tafenprihadi", "label": "tafenprihadi", "shape": "dot"}, {"id": "lohadika", "label": "lohadika", "shape": "dot"}]);
+        edges = new vis.DataSet([{"from": "Ipriiiilll\u0027", "to": "moviemenfes"}, {"from": "Joji\u0027", "to": "Joji\u0027"}, {"from": "ER.\u0027", "to": "ER.\u0027"}, {"from": "IndiHomeCare\u0027", "to": "vinsmwoke"}, {"from": "IndiHomeCare\u0027", "to": "alfanfrdn"}, {"from": "kino suki\u0027", "to": "kino suki\u0027"}, {"from": "Wiwied Hirasah\u0027", "to": "IndiHomeCare"}, {"from": "jun \ud83d\udd96\u0027", "to": "jun \ud83d\udd96\u0027"}, {"from": "Suci\u0027", "to": "Suci\u0027"}, {"from": "Sugianto\u0027", "to": "IndiHomeCare"}, {"from": "Rina Sulisty\u0027", "to": "Rina Sulisty\u0027"}, {"from": "Tin || ia\u0027", "to": "Tin || ia\u0027"}, {"from": "IndiHomeCare\u0027", "to": "THE_NUGO"}, {"from": "IndiHomeCare\u0027", "to": "CelanaGemess"}, {"from": "ivryxvra\u0027", "to": "ivryxvra\u0027"}, {"from": "cintia\u0027", "to": "IndiHomeCare"}, {"from": "Keranjang Tokopedia \u0026 Shopee\u0027", "to": "IndiHome"}, {"from": "Vika Agustin\u0027", "to": "Vika Agustin\u0027"}, {"from": "IndiHomeCare\u0027", "to": "Prince_Anang"}, {"from": "Awal Zaputra\u0027", "to": "Awal Zaputra\u0027"}, {"from": "UKIE\u0027", "to": "Yoshua_Gultom"}, {"from": "IndiHomeCare\u0027", "to": "shshsjung"}, {"from": "kaniaaa \u2022 rest\u0027", "to": "kthdmtf"}, {"from": "FReni Agustine\u0027", "to": "indihomeborneo"}, {"from": "wann tap\u0027", "to": "wann tap\u0027"}, {"from": "Lia\u0027", "to": "moonareas"}, {"from": "L\u0027", "to": "L\u0027"}, {"from": "Fauziah Zurriyatina\u0027", "to": "IndiHomeCare"}, {"from": "AmarMulky\u0027", "to": "AmarMulky\u0027"}, {"from": "Fe Apriyani\u0027", "to": "indihomeborneo"}, {"from": "Nabalah Khusaini\u0027", "to": "Nabalah Khusaini\u0027"}, {"from": "photomath pro player\u0027", "to": "photomath pro player\u0027"}, {"from": "Andri Mawardi\u0027", "to": "indihomeborneo"}, {"from": "Uppy\u0027", "to": "Uppy\u0027"}, {"from": "prim\u0027", "to": "prim\u0027"}, {"from": "Uke Marchum\u0027", "to": "indihomeborneo"}, {"from": "YGG\u0027", "to": "IndiHome"}, {"from": "dewatrending\u0027", "to": "thefIasshh"}, {"from": "Afsana Amirah\u0027", "to": "Afsana Amirah\u0027"}, {"from": "Ike Rianasari\u0027", "to": "indihomeborneo"}, {"from": "Webhead\ud83d\udd77\ufe0f\ud83d\udd78\ufe0f\u0027", "to": "Webhead\ud83d\udd77\ufe0f\ud83d\udd78\ufe0f\u0027"}, {"from": "M\u0027", "to": "IndiHomeCare"}, {"from": "Enida Aminah\u0027", "to": "Enida Aminah\u0027"}, {"from": "\ud83e\udd8b\u0027", "to": "gugumakochi"}, {"from": "\ud835\udcd4\ud835\udcff\ud835\udcea \ud835\udcd1\ud835\udcea\ud835\udced\ud835\udcf2 \ud835\udcdd\ud835\udcf8\ud835\udcf8\ud835\udcfb\u0027", "to": "IndiHome"}, {"from": "Widhi Atmoko\u0027", "to": "Widhi Atmoko\u0027"}, {"from": "minsungg123490\u0027", "to": "IndiHomeCare"}, {"from": "IndiHomeCare\u0027", "to": "BabyRaa"}, {"from": "Nur C\u0027", "to": "Nur C\u0027"}, {"from": "antarada\u0027", "to": "antarada\u0027"}, {"from": "IndiHomeCare\u0027", "to": "pikabay"}, {"from": "Lia\u0027", "to": "Lia\u0027"}, {"from": "Bena.\u0027", "to": "Bena.\u0027"}, {"from": "Irvan\u0027", "to": "Irvan\u0027"}, {"from": "Seargeant\u0027", "to": "Seargeant\u0027"}, {"from": "Deti Karmila\u0027", "to": "Deti Karmila\u0027"}, {"from": "HELMETIUM\u0027", "to": "WillyJUVE5"}, {"from": "Bitna\u0027", "to": "IndiHomeCare"}, {"from": "Met Tio\u0027", "to": "IndihomeJTD"}, {"from": "Uppy\u0027", "to": "MySumatera"}, {"from": "Anugrah\u0027", "to": "Anugrah\u0027"}, {"from": "not paley\u0027", "to": "not paley\u0027"}, {"from": "IndiHomeCare\u0027", "to": "izza_na19"}, {"from": "IndiHomeCare\u0027", "to": "atika_rini"}, {"from": "Hartono Cahdeso\u0027", "to": "SartonoHutomo"}, {"from": "Razki0807\u0027", "to": "IndiHome"}, {"from": "\u2727\u0027", "to": "RIHAECHAN"}, {"from": "Lora Kandhi Swati\u0027", "to": "MySumatera"}, {"from": "Anang Hariyansah\u0027", "to": "IndiHomeCare"}, {"from": "Novi Miranti\u0027", "to": "Novi Miranti\u0027"}, {"from": "Lora Kandhi Swati\u0027", "to": "Lora Kandhi Swati\u0027"}, {"from": "Uppy\u0027", "to": "IndiHomeCare"}, {"from": "Met Tio\u0027", "to": "Met Tio\u0027"}, {"from": "IndiHomeCare\u0027", "to": "Hendaru_Adam"}, {"from": "IndiHomeCare\u0027", "to": "ShinodaNathan"}, {"from": "Reno S\u0027", "to": "Reno S\u0027"}, {"from": "Dedi Budiyanto\u0027", "to": "Dedi Budiyanto\u0027"}, {"from": "IndiHomeCare\u0027", "to": "afiffarras_"}, {"from": "taripermata\u0027", "to": "taripermata\u0027"}, {"from": "Atkrn\u0027", "to": "IndiHome"}, {"from": "Jimmy Legoh\u0027", "to": "Jimmy Legoh\u0027"}, {"from": "N a e l \u2744\ufe0f\u0027", "to": "N a e l \u2744\ufe0f\u0027"}, {"from": "IndiHomeCare\u0027", "to": "krisnawibisono1"}, {"from": "Hartono Cahdeso\u0027", "to": "jokowi"}, {"from": "lip\u00e9\u0027", "to": "lip\u00e9\u0027"}, {"from": "agita ratna\u0027", "to": "IndiHomeCare"}, {"from": "Desy\u0027", "to": "IndiHome"}, {"from": "IndiHomeCare\u0027", "to": "BastyanBram"}, {"from": "Kurniawan.muhammad\u0027", "to": "Kurniawan.muhammad\u0027"}, {"from": "banana\ud83c\udf6e\u0027", "to": "banana\ud83c\udf6e\u0027"}, {"from": "IndiHomeCare\u0027", "to": "ninakusumaputri"}, {"from": "Nina Kusuma Putri\u0027", "to": "IndiHomeCare"}, {"from": "IndiHomeCare\u0027", "to": "diniadeliafr"}, {"from": "agis\u269c \u2022 ia banget\u0027", "to": "agis\u269c \u2022 ia banget\u0027"}, {"from": "Biznet Home\u0027", "to": "abcdefge"}, {"from": "Indirawati\u0027", "to": "Indirawati\u0027"}, {"from": "Goodness\u0027", "to": "Goodness\u0027"}, {"from": "IndiHomeCare\u0027", "to": "v_taehyung2525"}, {"from": "IndiHomeCare\u0027", "to": "tafenprihadi"}, {"from": "mr ling\u0027", "to": "IndiHomeCare"}, {"from": "IndiHomeCare\u0027", "to": "roserollinz"}, {"from": "Bram Bastyan\u0027", "to": "IndiHomeCare"}, {"from": "Negeri seribu mimpi\u0027", "to": "Morning31711750"}, {"from": "IndiHomeCare\u0027", "to": "crosemoon"}, {"from": "dedekara\u0027", "to": "IndiHomeCare"}, {"from": "IndiHomeCare\u0027", "to": "naorissy"}, {"from": "Nayah\u0027", "to": "Nayah\u0027"}, {"from": "IndiHome Jakarta Utara\u0027", "to": "IndiHome Jakarta Utara\u0027"}, {"from": "tiaa 97\u0027", "to": "IndiHomeCare"}, {"from": "ShortPants\u0027", "to": "ShortPants\u0027"}, {"from": "kitamogumogu\u0027", "to": "kitamogumogu\u0027"}, {"from": "IndiHomeCare\u0027", "to": "rheeechan"}, {"from": "TERRE\u0027", "to": "TERRE\u0027"}, {"from": "IndiHomeCare\u0027", "to": "RatihRa49418868"}, {"from": "server id\u0027", "to": "IndiHome"}, {"from": "\u2022gooreumseng\u2022\u0027", "to": "\u2022gooreumseng\u2022\u0027"}, {"from": "Qomah17\u0027", "to": "IndiHomeCare"}, {"from": "ieroel\u0027", "to": "ieroel\u0027"}, {"from": "UselessPerson.\u0027", "to": "UselessPerson.\u0027"}, {"from": "istiqomah\u0027", "to": "IndiHomeCare"}, {"from": "Ratih Rahmawati\u0027", "to": "IndiHomeCare"}, {"from": "Achel08\u0027", "to": "IndiHomeCare"}, {"from": "Rini eA q Reny\u0027", "to": "IndiHomeCare"}, {"from": "nrl\u0027", "to": "nrl\u0027"}, {"from": "Jey\u0027", "to": "Jey\u0027"}, {"from": "Dinda Ayu Oktafiana\u0027", "to": "Dinda Ayu Oktafiana\u0027"}, {"from": "IndiHomeCare\u0027", "to": "jokiberuang"}, {"from": "No name\u0027", "to": "IndiHomeCare"}, {"from": "#garislucu\u0027", "to": "IndiHome"}, {"from": "Hendaru Adam\u0027", "to": "IndiHome"}, {"from": "IndiHomeCare\u0027", "to": "awesome_cobyist"}, {"from": "IndiHomeCare\u0027", "to": "aadisp"}, {"from": "IndiHomeCare\u0027", "to": "ridoremiii"}, {"from": "IndiHomeCare\u0027", "to": "zkrsyd"}, {"from": "patiencefull\u0027", "to": "IndiHomeCare"}, {"from": "IndiHomeCare\u0027", "to": "DjuraganH"}, {"from": "sang.warior\u0027", "to": "sang.warior\u0027"}, {"from": "Rasyid\u0027", "to": "naorissy"}, {"from": "Madevy\u0027", "to": "Madevy\u0027"}, {"from": "IndiHomeCare\u0027", "to": "parmenbloko"}, {"from": "IndiHomeCare\u0027", "to": "fzurriyatina"}, {"from": "Sylvaaaaa29\u0027", "to": "Sylvaaaaa29\u0027"}, {"from": "Akilud\u0027", "to": "Akilud\u0027"}, {"from": "IndiHomeCare\u0027", "to": "wisnu_satyadh"}, {"from": "IndiHomeCare\u0027", "to": "pir_gs"}, {"from": "pecintamochi\u0027", "to": "IndiHomeCare"}, {"from": "ariska damayanti\u0027", "to": "ariska damayanti\u0027"}, {"from": "rega\u0027", "to": "rega\u0027"}, {"from": "Cantika\u0027", "to": "IndiHomeCare"}, {"from": "Awan\u0027", "to": "Awan\u0027"}, {"from": "al.\u0027", "to": "al.\u0027"}, {"from": "PIR\u0027", "to": "PIR\u0027"}, {"from": "Adi\u0027", "to": "IndiHomeCare"}, {"from": "Firman Firdaus\u0027", "to": "Firman Firdaus\u0027"}, {"from": "Aa dyanz\u0027", "to": "Aa dyanz\u0027"}, {"from": "zyaa\u2740 k/ia\u0027", "to": "zyaa\u2740 k/ia\u0027"}, {"from": "martina\u0027", "to": "martina\u0027"}, {"from": "Tirta Jaya\u0027", "to": "TirtaJa19"}, {"from": "pika\u0027", "to": "IndiHome"}, {"from": "IndiHomeCare\u0027", "to": "lohadika"}, {"from": "Apasih\u0027", "to": "IndiHomeCare"}, {"from": "Tirta Jaya\u0027", "to": "Tirta Jaya\u0027"}, {"from": "IndiHomeCare\u0027", "to": "bvdisan"}, {"from": "IndiHomeCare\u0027", "to": "ridhaakbarkusum"}, {"from": "Budi\u0027", "to": "bvdisan"}, {"from": "Arkatama_\u0027", "to": "Arkatama_\u0027"}, {"from": "@lohadika\u0027", "to": "IndiHomeCare"}, {"from": "mhas\u0027", "to": "mhas\u0027"}, {"from": "AnotherWays\u0027", "to": "AnotherWays\u0027"}, {"from": "aji \ud83d\uddff\u0027", "to": "aji \ud83d\uddff\u0027"}, {"from": "Blackhole\u0027", "to": "IndiHomeCare"}, {"from": "IndiHomeCare\u0027", "to": "racarissas"}, {"from": "A86_Crypto\ud83d\ude80\ud83d\ude80\ud83d\ude80\u0027", "to": "IndiHomeCare"}, {"from": "mhas\u0027", "to": "MySumatera"}, {"from": "ridha akbar kusuma\u0027", "to": "IndiHome"}, {"from": "ariya\u0027", "to": "IndiHomeCare"}, {"from": "Bababeyaw\u0027", "to": "IndiHomeCare"}, {"from": "oops!!\u0027", "to": "IndiHomeCare"}, {"from": "IndiHomeCare\u0027", "to": "4forash"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
