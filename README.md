@@ -15,6 +15,8 @@ for much easier to detect Public relation crisis.
 Third task will be extract all text customer message using gensim in unsupervised latent Dirichlet Allocation (LDA)<sup>[3]</sup> model by gensim<sup>[4]</sup>. We are doing this to make us more understand
 what happen or what topic people think about the research subject. With this machine learning we are can see a unseen pattern of message<sup>[5]</sup>.
 
+Fourth Task will be relation extraction.But first we need to use and train Named Entity Recognition. This is will the most complicated task since NER in bahasa indonesia still difficult to train. Well I will said this is almost impossible to achieve since i know nothing about this NLP Task.
+
  If there is a possible time I will also mapping the network graph<sup>[6]</sup>,in this scenario we can see who is the most powerfull person who have influence our sentiment in social media.
  For visualize the network we are gonna use networkx and pyvis<sup>[7]</sup>
 
