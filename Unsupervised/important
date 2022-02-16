@@ -1,0 +1,26 @@
+#BOTH OF THIS FOR REMOVING HIGH TFIDF WORD
+
+"""
+corpus = [id2word.doc2bow(text) for text in df5]
+
+tfidf = TfidfModel(corpus, id2word=id2word)
+low_value = 0.03
+words = []
+words_missing_in_tfidf = []
+
+for i in range(0, len(corpus)):
+    bow = corpus[i]
+    low_value_words = []  # reinitialize to be safe. You can skip this.
+    tfidf_ids = [id for id, value in tfidf[bow]]
+    bow_ids = [id for id, value in bow]
+    low_value_words = [id for id, value in tfidf[bow] if value < low_value]
+    drops = low_value_words + words_missing_in_tfidf
+    for item in drops:
+        words.append(id2word[item])
+    words_missing_in_tfidf = [id for id in bow_ids if
+                              id not in tfidf_ids]  # The words with tf-idf socre 0 will be missing
+
+    new_bow = [b for b in bow if b[0] not in low_value_words and b[0] not in words_missing_in_tfidf]
+    corpus[i] = new_bow
+
+"""
