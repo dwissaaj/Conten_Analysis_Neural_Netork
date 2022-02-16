@@ -1,8 +1,17 @@
 # Conten_Analysis_Neural_Netork
-Hi I am Dwi Setyo Aji from Indonesia.Currently I am doing my research on bachelor degree at UPN Veteran Jawa Timur Communication Science.
-In this Project I will primarily using Artificial Intelligence especially Natural Language Processing with Tensorflow,Scikit-learn,Spacy,
-gensim and a few other library like pandas,numpy,matplotlib,Networkx,plotly,pyvis and etc.Since I am from this major we are encountered
-multiple text data. But In my university developing machine learning for analyse text is still new.
+Hi I am Dwi Setyo Aji from Indonesia.Currently I am doing my research on bachelor degree at UPN Veteran Jawa Timur Communication Science.You will be confused why a communication student creating Artificial intelligence,let me explain in a little bit.
+Laswell in Littlejohn (2011:334) define "Communication is Who, Says What, In Which Channel, To Whom, With What Effect".
+To understand I do this because the word of "Says What".Message is very crucial in Communication especially in corporate.We are focusing the text message and only analyze that object. This method called "Content analysis" where is we analyse the content of message,in this scenario is the text. We already encountered
+a big chunk data text but not really look at it because the automation like this not really common to build in our major studies.
+We are living in era where data is too many for us to read in our life time.Creating automate in Natural Language Processing is a thing we need more researching for
+enhance our quality in Communication science. And here I am ready for challenge any difficulties I will facing.
+# Tool
+
+In this Project I will primarily using Artificial Intelligence especially Natural Language Processing library with Tensorflow,Scikit-learn,Spacy,
+gensim and a few other library like pandas,numpy,matplotlib,Networkx,plotly,pyvis and etc. I am gonna using pycharm as primary IDE for coding.
+
+# Task
+
 
 The first task I will complete is topic classification with Neural Network Architecture Bidirectional Long Short Term Memory<sup>[1]</sup>. The case will be in multiclass classification.
 Company need to classify text so they can make more different approach for different problem. From digital humanites perspective this theory came from what we called Public Relation.
@@ -21,7 +30,7 @@ Fourth Task will be relation extraction.But first we need to use and train Named
  For visualize the network we are gonna use networkx and pyvis<sup>[7]</sup>
 
 
-**Reference**
+## **Reference**
 
 
 <sup>[1]</sup>https://www.analyticsvidhya.com/blog/2021/06/lstm-for-text-classification/
