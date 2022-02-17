@@ -9,9 +9,6 @@ auth = tweepy.OAuth1UserHandler(
    "2209890762-3OUYElYDtZ7DZsqbmH8il6V7QPJPV40LB6y0mwb", "528FEgzYTpuIL0epN5KKy9Fn34hvUVfZP00F0pUILTKHn"
 )
 api = tweepy.API(auth)
-
-tweet_get = api.search_tweets(q="indihome",count=1000,until="2022-02-14",result_type="recent")
-
 created_at = []
 id = []
 id_str = []
@@ -38,6 +35,13 @@ retweeted=[]
 possibly_sensitive=[]
 lang=[]
 
+#REMEMBER FIRST DATE IS THE PARAMETER FOR THE DAY DATE TAKING
+print("tanggal awal \n")
+
+date_f = int(input())
+print("tanggal akhir \n")
+date_l = int(input())
+tweet_get = api.search_30_day(label="data",query="indihome",fromDate=f"202201{date_f}0000",toDate=f"202201{date_l}0000",maxResults=100)
 for tweets in tweet_get:
     data = tweets._json
     created_at.append(data.get('created_at'))
@@ -63,9 +67,6 @@ for tweets in tweet_get:
     retweeted.append(data.get('retweeted'))
     possibly_sensitive.append(data.get('possibly_sensitive'))
     lang.append(data.get('lang'))
-
-
-
 df = pd.DataFrame({'created_at':created_at,
                    'id':id,
                    'id_str':id_str,
@@ -90,6 +91,5 @@ df = pd.DataFrame({'created_at':created_at,
                    'possibly_sensitive':possibly_sensitive,
                    'lang':lang})
 
-print("Named file \n")
-naming = str(input())
-df.to_excel(f"..\data_30_days\{naming}.xlsx")
+
+df.to_excel(f".\data_30_days\data {date_f}.xlsx")
