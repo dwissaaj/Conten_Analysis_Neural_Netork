@@ -147,7 +147,16 @@ def remove_high_tfidf(dataframe,column:str,low_value:float):
         corpustfidf[i] = new_bow
     return corpustfidf,id2w
 
+def to_json(filename:str,dataframe):
+    with open(f'{filename}.json', 'w') as f:
+        f.write(dataframe.to_json(orient="records"))
 
+
+df = load_data("data_clean.xlsx")
+df2 = df[:10]
+to_json("datasen",df2)
+
+"""
 df = load_data("data.xlsx")
 df2 = remove_username(df, "text")
 df3 = cleaning_data(df2, "text")
@@ -160,7 +169,7 @@ tfid2 = remove_high_tfidf(df4,"text",0.05)[1]
 lda = lda_model(corptfid, tfid2, 7, 1, 2, 3)
 visua = visualize(lda, corptfid, tfid2, "pcoa", 20, "tfid")
 
-
+"""
 # THE DATASET NOT LEMMATIZE.TRY TO USE SPARKNLP FOR THAT
 # REMEMBER TO SAVE THE MODEL USING gensim.save()
 

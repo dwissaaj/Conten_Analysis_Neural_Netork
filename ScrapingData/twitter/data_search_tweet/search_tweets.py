@@ -1,96 +1,67 @@
-
-import json
-
 import pandas as pd
 import tweepy
-import pandas as pd
-auth = tweepy.OAuth1UserHandler(
-   "laQY4h8wZ6swfCBh2aiNHtawI", "VzaRu7TRp4J3k0Dy6TiXuOzLX8FO3XyUy8IYiXUGKlh6BMAJYr",
-   "2209890762-3OUYElYDtZ7DZsqbmH8il6V7QPJPV40LB6y0mwb", "528FEgzYTpuIL0epN5KKy9Fn34hvUVfZP00F0pUILTKHn"
-)
-api = tweepy.API(auth)
 
-tweet_get = api.search_tweets(q="indihome",count=1000,until="2022-02-04",result_type="recent",since_id=1489362558603510000)
+Client = tweepy.Client("AAAAAAAAAAAAAAAAAAAAAK%2BeAwEAAAAAQSIOcQ2eSaCCfIYIpPrblFrH8cE%3DYrewCOd02CBazf5nrPlaA7cy0kMi9qzgJ8ThoN3cdpzy6Dq9BK")
 
-created_at = []
-id = []
-id_str = []
-text = []
-truncated = []
-entities = []
-metadata = []
-source = []
-in_reply_to_status_id = []
-in_reply_to_status_id_str = []
-in_reply_to_user_id=[]
-in_reply_to_user_id_str=[]
-in_reply_to_screen_name=[]
-user=[]
-geo=[]
-coordinates=[]
-place=[]
-contributors=[]
-is_quote_status=[]
-retweet_count=[]
-favorite_count=[]
-favorited=[]
-retweeted=[]
-possibly_sensitive=[]
-lang=[]
+textsrt = []
+textgum = []
+for tweet in tweepy.Paginator(Client.search_recent_tweets,query="indihome",max_results=100,
+                              start_time = "2022-02-15T00:00:00Z",
+                              end_time="2022-02-15T23:00:00Z",
+                              tweet_fields=['created_at'],
+                              user_fields=['username','profile_image_url'],
+                              expansions=['author_id']).flatten(limit=5000):
+   textsrt.append(tweet.text)
 
-for tweets in tweet_get:
-    data = tweets._json
-    created_at.append(data.get('created_at'))
-    id.append(data.get('id'))
-    id_str.append(data.get('id_str'))
-    text.append(data.get('text'))
-    truncated.append(data.get('truncated'))
-    entities.append(data.get('entities'))
-    source.append(data.get('source'))
-    metadata.append(data.get('metadata'))
-    in_reply_to_status_id.append(data.get('in_reply_to_status_id'))
-    in_reply_to_status_id_str.append(data.get('in_reply_to_status_id_str'))
-    in_reply_to_screen_name.append(data.get('in_reply_to_screen_name'))
-    user.append(data.get('user'))
-    geo.append(data.get('geo'))
-    coordinates.append(data.get('coordinates'))
-    place.append(data.get('place'))
-    contributors.append(data.get('contributors'))
-    is_quote_status.append(data.get('is_quote_status'))
-    retweet_count.append(data.get('retweet_count'))
-    favorite_count.append(data.get('favorite_count'))
-    favorited.append(data.get('favorited'))
-    retweeted.append(data.get('retweeted'))
-    possibly_sensitive.append(data.get('possibly_sensitive'))
-    lang.append(data.get('lang'))
+for tweet in tweepy.Paginator(Client.search_recent_tweets,query="indihome",max_results=100,
+                              start_time = "2022-02-15T00:00:00Z",
+                              end_time="2022-02-15T23:00:00Z",
+                              tweet_fields=['created_at'],
+                              user_fields=['username','profile_image_url'],
+                              expansions=['author_id']).flatten(limit=800):
+   textgum.append(tweet.text)
+
+
+dfsrt = pd.DataFrame(textsrt)
+dfgum = pd.DataFrame(textgum)
+dfsrt.to_excel("15-02.xlsx")
+dfgum.to_excel("gum 15-02.xlsx")
 
 
 
-df = pd.DataFrame({'created_at':created_at,
-                   'id':id,
-                   'id_str':id_str,
-                   'text':text,
-                   'truncated':truncated,
-                   'entities':entities,
-                   'source':source,
-                   'metadata':metadata,
-                   'in_reply_to_status_id':in_reply_to_status_id,
-                   'in_reply_to_status_id_str':in_reply_to_status_id_str,
-                   'in_reply_to_screen_name':in_reply_to_screen_name,
-                   'user':user,
-                   'geo':geo,
-                   'coordinates':coordinates,
-                   'place':place,
-                   'contributors':contributors,
-                   'is_quote_status':is_quote_status,
-                   'retweet_count':retweet_count,
-                   'favorite_count':favorite_count,
-                   'favorited':favorited,
-                   'retweeted':retweeted,
-                   'possibly_sensitive':possibly_sensitive,
-                   'lang':lang})
 
 
-print("Named file \n")
-naming = str(input())
-df.to_excel(f"..\data_search_tweet\{naming}.xlsx")
+
+
+
+
+
+
+
+"""
+
+response = Clien.search_recent_tweets(query="indihome",
+                                  end_time="2022-02-15T23:00:00Z",
+                                  start_time = "2022-02-15T00:00:00Z",
+                                  max_results=10,tweet_fields=['created_at'],user_fields=['username','profile_image_url']
+                                 ,expansions=['author_id'])
+
+response = Clien.search_recent_tweets(query="indihome",
+                                  end_time="2022-02-15T23:00:00Z",
+                                  start_time = "2022-02-15T00:00:00Z",
+                                  max_results=10,tweet_fields=['created_at'],user_fields=['username','profile_image_url']
+                                 ,expansions=['author_id'])
+#profile_image_url
+users = {u['id']: u for u in response.includes['users']}
+for tweet in response.data:
+    user = users[tweet.author_id]
+    text.append(tweet.text)
+    data_items = users.items()
+    data_list = list(data_items)
+    df = pd.DataFrame(data_list)
+
+
+df2 = pd.DataFrame(text)
+df3 = pd.concat([df,df2],axis=1)
+df3.to_excel("testing1.xlsx")"""
+
