@@ -38,10 +38,10 @@ lang=[]
 #REMEMBER FIRST DATE IS THE PARAMETER FOR THE DAY DATE TAKING
 print("tanggal awal \n")
 
-date_f = int(input())
+date_f = str(input())
 print("tanggal akhir \n")
-date_l = int(input())
-tweet_get = api.search_30_day(label="data",query="indihome",fromDate=f"202201{date_f}0000",toDate=f"202201{date_l}0000",maxResults=100)
+date_l = str(input())
+tweet_get = api.search_30_day(label="data",query="indihome",fromDate=f"202202{date_f}0000",toDate=f"202202{date_l}0000",maxResults=100)
 for tweets in tweet_get:
     data = tweets._json
     created_at.append(data.get('created_at'))
@@ -93,3 +93,4 @@ df = pd.DataFrame({'created_at':created_at,
 
 
 df.to_excel(f".\data_30_days\data {date_f}.xlsx")
+print(f"tanggal awal {date_f} akhir {date_l}")
