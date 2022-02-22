@@ -28,6 +28,16 @@ Fourth Task will be relation extraction.But first we need to use and train Named
 
  If there is a possible time I will also mapping the network graph<sup>[6]</sup>,in this scenario we can see who is the most powerfull person who have influence our sentiment in social media.
  For visualize the network we are gonna use networkx and pyvis<sup>[7]</sup>
+ 
+ 
+ 
+ 
+ #Project Process Workflow
+ 
+ 
+ 
+ 
+ ![alt text](https://github.com/dwissaaj/Content_Analysis_Neural_Network/blob/master/image/Data%20Mining.jpg)
 
 
 ## **Reference**
