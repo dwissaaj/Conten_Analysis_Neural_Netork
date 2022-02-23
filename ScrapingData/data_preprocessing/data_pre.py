@@ -50,3 +50,9 @@ def remove_stopwords(dataframe, column: str, lang: str):
     data = dataframe[column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop]))
     return data.to_frame(name=column)
 
+df = load_data("15-02.xlsx")
+df2 = remove_username(df,"text")
+df3 = cleaning_data(df2,"text")
+df4 = remove_stopwords(df3,"text","indonesian")
+with open('data.json', 'w') as f:
+    f.write(df4.to_json(orient='records', lines=True))
