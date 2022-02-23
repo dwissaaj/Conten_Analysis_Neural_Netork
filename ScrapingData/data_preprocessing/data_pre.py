@@ -1,7 +1,9 @@
 import re
 import warnings
 import pandas as pd
+from wordsegment import load, segment
 from nltk.corpus import stopwords
+load()
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
@@ -27,22 +29,28 @@ def remove_username(dataframe, column: str):
         data = pd.DataFrame(final, columns=[column])
     return data
 
-def cleaning_data(dataframe, column: str):
+def cleaning_data(dataframe, column: str,hastag_return: bool):
     """
     Removing all character,symbol and etc in dataframe
     """
-    text = dataframe[column].str.replace(
-        r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ' ', regex=True)
-    text = text.str.replace(r"[\"\'\|\?\=\.\\#\*\+\!\:\,]", '', regex=True)
+    hastag = dataframe[column].apply(lambda x: re.findall(r'\B#\w*[a-zA-Z]+\w*', x))
+    text = dataframe[column].str.replace(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ' ', regex=True)
+    text = text.str.replace(r'#(\w+)','',regex=True)
+    text = text.str.replace(r"[\"\'\|\?\=\.\\*\+\!\:\,]", '', regex=True)
     text = text.str.replace(r'\d+', '', regex=True)
     text = text.str.replace(r'RT', '', regex=True)
     text = text.str.replace(r'\n', ' ', regex=True)
     text = text.str.replace(r'\s\s+', " ", regex=True)
     text = text.str.lstrip()
     text = text.str.lower()
-    return text.to_frame(name=column)
+    if hastag_return == True:
+        hastag = hastag.to_frame(name="hastag")
+        text = text.to_frame(name=column)
+        return pd.concat([text,hastag],axis=1)
+    else:
+        return text.to_frame(name=column)
 
-def remove_stopwords(dataframe, column: str, lang: str):
+def remove_stopwords(dataframe, column: str, lang = "indonesian"):
     """
     Removing stopwords inside dataframe. Need install NLTK Stopwords to specify stopword list
     """
@@ -50,9 +58,18 @@ def remove_stopwords(dataframe, column: str, lang: str):
     data = dataframe[column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop]))
     return data.to_frame(name=column)
 
+
 df = load_data("15-02.xlsx")
 df2 = remove_username(df,"text")
-df3 = cleaning_data(df2,"text")
-df4 = remove_stopwords(df3,"text","indonesian")
-with open('data.json', 'w') as f:
-    f.write(df4.to_json(orient='records', lines=True))
+df3 = cleaning_data(df2,'text',True)
+df4 = remove_stopwords(df3,'text','indonesian')
+
+"""
+with open('dataNew.json', 'w') as f:
+    f.write(df4.to_json(orient='records', lines=False))
+
+"""
+
+"""
+
+    """
