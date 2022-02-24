@@ -6,16 +6,16 @@ Client = tweepy.Client("AAAAAAAAAAAAAAAAAAAAAK%2BeAwEAAAAAQSIOcQ2eSaCCfIYIpPrblF
 textsrt = []
 textgum = []
 for tweet in tweepy.Paginator(Client.search_recent_tweets,query="indihome",max_results=100,
-                              start_time = "2022-02-16T00:00:00Z",
-                              end_time="2022-02-16T23:00:00Z",
+                              start_time = "2022-02-17T00:00:00Z",
+                              end_time="2022-02-17T23:00:00Z",
                               tweet_fields=['created_at'],
                               user_fields=['username','profile_image_url'],
                               expansions=['author_id']).flatten(limit=5000):
    textsrt.append(tweet.text)
 
 for tweet in tweepy.Paginator(Client.search_recent_tweets,query="indihome",max_results=100,
-                              start_time = "2022-02-16T00:00:00Z",
-                              end_time="2022-02-16T23:00:00Z",
+                              start_time = "2022-02-17T00:00:00Z",
+                              end_time="2022-02-17T23:00:00Z",
                               tweet_fields=['created_at'],
                               user_fields=['username','profile_image_url'],
                               expansions=['author_id']).flatten(limit=800):
@@ -24,8 +24,8 @@ for tweet in tweepy.Paginator(Client.search_recent_tweets,query="indihome",max_r
 
 dfsrt = pd.DataFrame(textsrt)
 dfgum = pd.DataFrame(textgum)
-dfsrt.to_excel("16-02.xlsx")
-dfgum.to_excel("gum 16-02.xlsx")
+dfsrt.to_excel("17-02.xlsx")
+dfgum.to_excel("gum 17-02.xlsx")
 
 
 
