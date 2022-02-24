@@ -3,6 +3,10 @@
 To understand what will we do in all task except for third task. The basic theory in communication science are the Public Relation and Social Customer
 Relationship Management.
 
+# Supervised Machine Learning
+
+It infers a function from labeled training data consisting of a set of training examples.[2] In supervised learning, each example is a pair consisting of an input object (typically a vector) and a desired output value (also called the supervisory signal). A supervised learning algorithm analyzes the training data and produces an inferred function, which can be used for mapping new examples. An optimal scenario will allow for the algorithm to correctly determine the class labels for unseen instances. This requires the learning algorithm to generalize from the training data to unseen situations in a "reasonable" way . This statistical quality of an algorithm is measured through the so-called generalization error.
+
 # **Public Relation**
 
 Public Relation is _Public relations in a broad meaning is defined as a concrete strategy in distributing information and giving guidance in order to create a proper understanding by the society concerning tasks and functions owned by the work organizations (Scott, 2010; Soekarto, 2014)_
