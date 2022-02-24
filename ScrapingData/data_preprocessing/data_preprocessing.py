@@ -7,9 +7,6 @@ from nltk.corpus import stopwords
 load()
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-
-
-
 def load_data(file):
     """
     Load_data fun reading excel file and change to ascii encoding for
@@ -60,27 +57,13 @@ def remove_stopwords(dataframe, column: str, lang = "indonesian"):
     return data.to_frame(name=column)
 
 def write_json(filename:str,dataframe):
-    with open(f'f{filename}.json', 'w') as f:
+    with open(f'{filename}.json', 'w') as f:
         f.write(dataframe.to_json(orient='records', lines=False))
 
-def load_json(file):
-    f = open(f'{file}')
-    data = json.load(f)
-    return data
 
-df = load_data("15-02.xlsx")
+
+df = load_data("16data.xlsx")
 df2 = remove_username(df,"text")
 df3 = cleaning_data(df2,'text',True)
-df4 = remove_stopwords(df3,'text','indonesian')
-js = pd.read_json('sen_data.jsonl',lines=True)
-accepted = df[df['answer'] == 'accept']
-"""
-
-tweets = []
-for line in open('sen_data.jsonl', 'r'):
-    tweets.append(json.loads(line))
-"""
-
-"""
-
-    """
+df4 = remove_stopwords(df3,'text')
+write_json("data16",df4)
