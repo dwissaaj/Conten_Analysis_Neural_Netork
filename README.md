@@ -38,6 +38,11 @@ Fourth Task will be relation extraction.But first we need to use and train Named
  
  
  ![alt text](https://github.com/dwissaaj/Content_Analysis_Neural_Network/blob/master/image/Data%20Mining.jpg)
+ 
+ 
+ # Communication Thinking Process
+ 
+ ![alt text](https://github.com/dwissaaj/Content_Analysis_Neural_Network/blob/master/image/Com-Pipeline.jpg)
 
 
 ## **Reference**
