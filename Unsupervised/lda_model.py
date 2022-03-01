@@ -1,19 +1,19 @@
 import re
-import gensim
-import spacy
-import pyLDAvis
 import warnings
-import pandas as pd
-from gensim import corpora
+import gensim
 import gensim.models.ldamodel
-from nltk.corpus import stopwords
-from pyLDAvis import gensim_models
+import pandas as pd
+import pyLDAvis
+from gensim import corpora
+from wordcloud import WordCloud
+from gensim.models.ldamodel import LdaModel
+import matplotlib.pyplot as plt
 from gensim.models import TfidfModel
+from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from pyLDAvis import gensim_models
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
 
 
 def load_data(file):
@@ -37,20 +37,29 @@ def remove_username(dataframe, column: str):
         data = pd.DataFrame(final, columns=[column])
     return data
 
-def cleaning_data(dataframe, column: str):
+
+def cleaning_data(dataframe, column: str, hastag_return: bool):
     """
     Removing all character,symbol and etc in dataframe
     """
+    hastag = dataframe[column].apply(lambda x: re.findall(r'\B#\w*[a-zA-Z]+\w*', x))
     text = dataframe[column].str.replace(
         r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ' ', regex=True)
-    text = text.str.replace(r"[\"\'\|\?\=\.\\#\*\+\!\:\,]", '', regex=True)
+    text = text.str.replace(r'#(\w+)', '', regex=True)
+    text = text.str.replace(r"[\"\'\|\?\=\.\\*\+\!\:\,]", '', regex=True)
     text = text.str.replace(r'\d+', '', regex=True)
     text = text.str.replace(r'RT', '', regex=True)
     text = text.str.replace(r'\n', ' ', regex=True)
     text = text.str.replace(r'\s\s+', " ", regex=True)
     text = text.str.lstrip()
     text = text.str.lower()
-    return text.to_frame(name=column)
+    if hastag_return == True:
+        hastag = hastag.to_frame(name="hastag")
+        text = text.to_frame(name=column)
+        return pd.concat([text, hastag], axis=1)
+    else:
+        return text.to_frame(name=column)
+
 
 def remove_stopwords(dataframe, column: str, lang: str):
     """
@@ -60,12 +69,14 @@ def remove_stopwords(dataframe, column: str, lang: str):
     data = dataframe[column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop]))
     return data.to_frame(name=column)
 
+
 def generate_word(dataframe, column: str):
     """
     Tokenize using NLTK for split each word
     """
     data = dataframe[column].apply(word_tokenize)
     return data
+
 
 def id_to_word(dataframe):
     """
@@ -74,18 +85,20 @@ def id_to_word(dataframe):
     idto_word = corpora.Dictionary(dataframe)
     return idto_word
 
-def create_corpus(dataframe,column:str):
+
+def create_corpus(dataframe, column: str):
     """
     Creating corpus by combine the id to word
     """
 
-    generated = generate_word(dataframe,f"{column}")
+    generated = generate_word(dataframe, f"{column}")
     idtwords = corpora.Dictionary(generated)
     cps = []
     for text in generated:
         new = idtwords.doc2bow(text)
         cps.append(new)
     return cps
+
 
 def lda_model(corpuslda, id_two_w, topic: int, random_stat: int, update_every: int, chunksize: int, alpha="auto"):
     """
@@ -100,7 +113,8 @@ def lda_model(corpuslda, id_two_w, topic: int, random_stat: int, update_every: i
                                               alpha=alpha)
     return lda_mdl
 
-def visualize(lda_data, corpus_list, id2word_data, mds: str, r: int, filename):
+
+def visualize(lda_data, corpus_list, id2word_data, mds: str, r: int,filename:str):
     """
     Visualize the LDA model using pyLDAVis
     """
@@ -110,10 +124,11 @@ def visualize(lda_data, corpus_list, id2word_data, mds: str, r: int, filename):
                                          dictionary=id2word_data,
                                          mds=mds,
                                          R=r)
-    pyLDAvis.save_html(vis, f"{filename}.html")
+    pyLDAvis.save_html(vis,f"{filename}.html")
     return vis
 
-def remove_high_tfidf(dataframe,column:str,low_value:float):
+
+def remove_high_tfidf(dataframe, column: str, low_value: float):
     """
     USE THIS IF YOU HAVE A HIGH TFIDF WORD
     USE IT CAREFULLY FOR BACK UP CHECK MANUAL BOOK AT TXT
@@ -123,7 +138,7 @@ def remove_high_tfidf(dataframe,column:str,low_value:float):
     :param low_value: MINIMUM OF VALUE
     :return:
     """
-    generated_w = generate_word(dataframe,f"{column}")
+    generated_w = generate_word(dataframe, f"{column}")
     id2w = id_to_word(generated_w)
     corpustfidf = [id2w.doc2bow(text) for text in generated_w]
     tfidf = TfidfModel(corpustfidf, id2word=id2w)
@@ -145,35 +160,54 @@ def remove_high_tfidf(dataframe,column:str,low_value:float):
 
         new_bow = [b for b in bow if b[0] not in low_value_words and b[0] not in words_missing_in_tfidf]
         corpustfidf[i] = new_bow
-    return corpustfidf,id2w
+    return corpustfidf, id2w
 
-def to_json(filename:str,dataframe):
+
+def to_json(filename: str, dataframe):
     with open(f'{filename}.json', 'w') as f:
         f.write(dataframe.to_json(orient="records"))
 
+def get_hastag(dataframe,column:str)-> list:
+    nan_value = float("NaN")
+    dataframe[column] = dataframe[column].apply(lambda x: re.findall(r'\B#\w*[a-zA-Z]+\w*', x))
+    hastag = dataframe.astype(str).drop_duplicates()
+    hastag = hastag.replace({"\[": "",
+                          "\]": "",
+                          "\'": "",
+                          "\,": " "}, regex=True)
+    hastag.replace("", nan_value, inplace=True)
+    hastag.dropna(subset = [column], inplace=True)
+    tagstr = hastag[column].values.tolist()
+    return tagstr
 
-df = load_data("data_clean.xlsx")
-df2 = df[:10]
-to_json("datasen",df2)
+def wordcloud_maker(stack):
+    wordcloud = WordCloud(width=480, height=480, colormap="Oranges_r").generate(stack)
+    plt.figure()
+    plt.imshow(wordcloud, interpolation="bilinear")
+    plt.axis("off")
+    plt.margins(x=0, y=0)
+    plt.show()
 
-"""
-df = load_data("data.xlsx")
-df2 = remove_username(df, "text")
-df3 = cleaning_data(df2, "text")
-df4 = remove_stopwords(df3, "text", "indonesian")
-df5 = generate_word(df4, "text") #key is on generated word for creating corpus and id2word
-id2word = id_to_word(df5)
-corpus_data = create_corpus(df4,"text")
+
+df = load_data("Voxpopdata.xlsx")
+remove_user = remove_username(df,"text")
+clean_data = cleaning_data(remove_user,"text",False)
+remove_stop = remove_stopwords(clean_data,"text","indonesian")
+toenize = generate_word(clean_data,"text")
+id2word = id_to_word(toenize)
+corpus = create_corpus(remove_stop,"text")
+lda = lda_model(corpus,id2word,20,20,20,20 )
+#vish = visualize(lda,corpus,id2word,"mmds",10,"normal")
 corptfid = remove_high_tfidf(df4,"text",0.05)[0]
 tfid2 = remove_high_tfidf(df4,"text",0.05)[1]
 lda = lda_model(corptfid, tfid2, 7, 1, 2, 3)
 visua = visualize(lda, corptfid, tfid2, "pcoa", 20, "tfid")
 
-"""
+ldas = gensim.models.LdaModel()
+print(ldas.show_topic(1))
+print(ldas.show_topics(num_topics=[1,2,3,4,5]))
+
 # THE DATASET NOT LEMMATIZE.TRY TO USE SPARKNLP FOR THAT
 # REMEMBER TO SAVE THE MODEL USING gensim.save()
 
-
-
-
-
+"""
