@@ -1,17 +1,17 @@
 import re
 import warnings
+
 import gensim
 import gensim.models.ldamodel
+import matplotlib.pyplot as plt
 import pandas as pd
 import pyLDAvis
 from gensim import corpora
-from wordcloud import WordCloud
-from gensim.models.ldamodel import LdaModel
-import matplotlib.pyplot as plt
 from gensim.models import TfidfModel
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from pyLDAvis import gensim_models
+from wordcloud import WordCloud
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -180,13 +180,15 @@ def get_hastag(dataframe,column:str)-> list:
     tagstr = hastag[column].values.tolist()
     return tagstr
 
-def wordcloud_maker(stack):
-    wordcloud = WordCloud(width=480, height=480, colormap="Oranges_r").generate(stack)
+def wordcloud_maker(stack:list,colormap:str):
+    to_str = ' '.join(map(str,stack))
+    wordcloud = WordCloud(width=700, height=700, colormap=f"{colormap}").generate(to_str)
     plt.figure()
     plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis("off")
     plt.margins(x=0, y=0)
     plt.show()
+
 
 
 df = load_data("Voxpopdata.xlsx")
@@ -197,17 +199,13 @@ toenize = generate_word(clean_data,"text")
 id2word = id_to_word(toenize)
 corpus = create_corpus(remove_stop,"text")
 lda = lda_model(corpus,id2word,20,20,20,20 )
-#vish = visualize(lda,corpus,id2word,"mmds",10,"normal")
-corptfid = remove_high_tfidf(df4,"text",0.05)[0]
-tfid2 = remove_high_tfidf(df4,"text",0.05)[1]
-lda = lda_model(corptfid, tfid2, 7, 1, 2, 3)
-visua = visualize(lda, corptfid, tfid2, "pcoa", 20, "tfid")
+hastag = get_hastag(df,"text")
+haslit = ' '.join(map(str,hastag))
 
-ldas = gensim.models.LdaModel()
-print(ldas.show_topic(1))
-print(ldas.show_topics(num_topics=[1,2,3,4,5]))
+
+#vish = visualize(lda,corpus,id2word,"mmds",10,"normal")
+
 
 # THE DATASET NOT LEMMATIZE.TRY TO USE SPARKNLP FOR THAT
 # REMEMBER TO SAVE THE MODEL USING gensim.save()
 
-"""

@@ -34,6 +34,12 @@ def cleaning_data(dataframe, column: str,hastag_return: bool):
     hastag = dataframe[column].apply(lambda x: re.findall(r'\B#\w*[a-zA-Z]+\w*', x))
     text = dataframe[column].str.replace(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ' ', regex=True)
     text = text.str.replace(r'#(\w+)','',regex=True)
+    text = text.str.replace(r'[\/]','',regex=True)
+    text = text.str.replace(r'[%]','',regex=True)
+    text = text.str.replace(r'[()]','',regex=True)
+    text = text.str.replace(r'[(]','',regex=True)
+    text = text.str.replace(r'[)]','',regex=True)
+    text = text.str.replace(r'[-]','',regex=True)
     text = text.str.replace(r"[\"\'\|\?\=\.\\*\+\!\:\,]", '', regex=True)
     text = text.str.replace(r'\d+', '', regex=True)
     text = text.str.replace(r'RT', '', regex=True)
@@ -58,12 +64,13 @@ def remove_stopwords(dataframe, column: str, lang = "indonesian"):
 
 def write_json(filename:str,dataframe):
     with open(f'{filename}.json', 'w') as f:
-        f.write(dataframe.to_json(orient='records', lines=False))
+        f.write(dataframe.to_json(orient="records", lines=False))
 
 
 
-df = load_data("16data.xlsx")
-df2 = remove_username(df,"text")
-df3 = cleaning_data(df2,'text',True)
-df4 = remove_stopwords(df3,'text')
-write_json("data16",df4)
+df = load_data("indihome.xlsx")
+df2 = cleaning_data(df,"berita",False)
+df3 = remove_stopwords(df2,"berita")
+df4 = remove_username(df3,"berita")
+df4.rename(columns={"berita":"text"},inplace=True)
+write_json("news",df4)

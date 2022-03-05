@@ -20,7 +20,7 @@ def scraping_link(query:str,start_day:str,start_month:str,start_year:str,end_day
     urls = data['link'].to_list()
     return urls
 
-link = scraping_link("indihome","01","01","2021","01","02","2022")
+link = scraping_link("shiddiqiyyah","01","01","2021","01","02","2022")
 
 data = []
 for url in link:
@@ -50,3 +50,4 @@ df = pd.concat(data)
 df = df.replace(to_replace='None', value=np.nan).dropna()
 old_dates = df['tanggal']
 df['tanggal'] = df['tanggal'].apply(lambda a: pd.to_datetime(a).date())
+df.to_excel("shiddiqiyyah.xlsx")
