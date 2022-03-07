@@ -5,12 +5,12 @@ Client = tweepy.Client("AAAAAAAAAAAAAAAAAAAAAK%2BeAwEAAAAAQSIOcQ2eSaCCfIYIpPrblF
 
 textsrt = []
 textgum = []
-for tweet in tweepy.Paginator(Client.search_recent_tweets,query="@IndiHome",max_results=100,
-                              start_time = "2022-02-26T00:00:00Z",
-                              end_time="2022-02-26T23:20:00Z",
+for tweet in tweepy.Paginator(Client.search_recent_tweets,query="penundaan pemilu",max_results=100,
+                              start_time = "2022-03-07T00:40:00Z",
+                              end_time="2022-03-07T15:30:30Z",
                               tweet_fields=['created_at'],
                               user_fields=['username','profile_image_url'],
-                              expansions=['author_id']).flatten(limit=20000):
+                              expansions=['author_id']).flatten(limit=50000):
    textsrt.append(tweet.text)
 """   
 for tweet in tweepy.Paginator(Client.search_recent_tweets,query="indihome",max_results=100,
@@ -23,7 +23,7 @@ for tweet in tweepy.Paginator(Client.search_recent_tweets,query="indihome",max_r
 
 
 dfsrt = pd.DataFrame(textsrt)
-dfsrt.to_excel("@IndiHome.xlsx")
+dfsrt.to_excel("penundaan pemilu7.xlsx")
 
 
 

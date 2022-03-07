@@ -100,17 +100,14 @@ def create_corpus(dataframe, column: str):
     return cps
 
 
-def lda_model(corpuslda, id_two_w, topic: int, random_stat: int, update_every: int, chunksize: int, alpha="auto"):
+def lda_model(corpuslda, id_two_w, topic: int):
     """
     Calling LDA model gensim
     """
     lda_mdl = gensim.models.ldamodel.LdaModel(corpus=corpuslda,
                                               id2word=id_two_w,
-                                              num_topics=topic,
-                                              random_state=random_stat,
-                                              update_every=update_every,
-                                              chunksize=chunksize,
-                                              alpha=alpha)
+                                              num_topics=topic
+                                             )
     return lda_mdl
 
 
@@ -182,27 +179,34 @@ def get_hastag(dataframe,column:str)-> list:
 
 def wordcloud_maker(stack:list,colormap:str):
     to_str = ' '.join(map(str,stack))
-    wordcloud = WordCloud(width=700, height=700, colormap=f"{colormap}").generate(to_str)
+    wordcloud = WordCloud(width=2000, height=2000, colormap=f"{colormap}").generate(to_str)
     plt.figure()
-    plt.imshow(wordcloud, interpolation="bilinear")
+    plt.imshow(wordcloud, interpolation="lanczos")
     plt.axis("off")
     plt.margins(x=0, y=0)
     plt.show()
 
 
 
-df = load_data("Voxpopdata.xlsx")
+df = load_data("data_pemilu.xlsx")
 remove_user = remove_username(df,"text")
 clean_data = cleaning_data(remove_user,"text",False)
 remove_stop = remove_stopwords(clean_data,"text","indonesian")
 toenize = generate_word(clean_data,"text")
 id2word = id_to_word(toenize)
 corpus = create_corpus(remove_stop,"text")
-lda = lda_model(corpus,id2word,20,20,20,20 )
+
+
+ldah = lda_model(corpus,id2word,10 )
 hastag = get_hastag(df,"text")
-haslit = ' '.join(map(str,hastag))
+viz = visualize(ldah,corpus,id2word,"mmds",1,"pemiluh6")
 
+lowcor = remove_high_tfidf(clean_data,"text",0.1)[0]
+lowid = remove_high_tfidf(clean_data,"text",0.1)[1]
+ldal = lda_model(lowcor,lowid,10 )
+viz2 = visualize(ldal,corpus,id2word,"mmds",1,"pemilul6")
 
+wd = wordcloud_maker(hastag,"Set1")
 #vish = visualize(lda,corpus,id2word,"mmds",10,"normal")
 
 
