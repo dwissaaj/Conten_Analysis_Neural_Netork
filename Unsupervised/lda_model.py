@@ -197,13 +197,13 @@ id2word = id_to_word(toenize)
 corpus = create_corpus(remove_stop,"text")
 
 
-ldah = lda_model(corpus,id2word,10 )
+ldah = lda_model(corpus,id2word,25 )
 hastag = get_hastag(df,"text")
 viz = visualize(ldah,corpus,id2word,"mmds",1,"pemiluh6")
 
 lowcor = remove_high_tfidf(clean_data,"text",0.1)[0]
 lowid = remove_high_tfidf(clean_data,"text",0.1)[1]
-ldal = lda_model(lowcor,lowid,10 )
+ldal = lda_model(lowcor,lowid,25 )
 viz2 = visualize(ldal,corpus,id2word,"mmds",1,"pemilul6")
 
 wd = wordcloud_maker(hastag,"Set1")

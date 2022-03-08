@@ -24,5 +24,5 @@ plt.show()
 G.add_edges_from(zip(vertex1,vertex2))
 nx.draw(G)
 plt.show()
-nt = Network()
+nt = Social_Network_Analysis()
 """
