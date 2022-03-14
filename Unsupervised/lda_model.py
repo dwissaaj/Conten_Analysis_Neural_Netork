@@ -179,7 +179,7 @@ def get_hastag(dataframe,column:str)-> list:
 
 def wordcloud_maker(stack:list,colormap:str):
     to_str = ' '.join(map(str,stack))
-    wordcloud = WordCloud(width=2000, height=2000, colormap=f"{colormap}").generate(to_str)
+    wordcloud = WordCloud(width=2000, height=2000,max_words=75, colormap=f"{colormap}").generate(to_str)
     plt.figure()
     plt.imshow(wordcloud, interpolation="lanczos")
     plt.axis("off")
@@ -188,7 +188,7 @@ def wordcloud_maker(stack:list,colormap:str):
 
 
 
-df = load_data("data_pemilu.xlsx")
+df = load_data("Voxpopdata.xlsx")
 remove_user = remove_username(df,"text")
 clean_data = cleaning_data(remove_user,"text",False)
 remove_stop = remove_stopwords(clean_data,"text","indonesian")
@@ -199,17 +199,15 @@ corpus = create_corpus(remove_stop,"text")
 
 ldah = lda_model(corpus,id2word,25 )
 hastag = get_hastag(df,"text")
-viz = visualize(ldah,corpus,id2word,"mmds",1,"pemiluh6")
+wordcloud_maker(hastag,"Set2")
 
+
+""""
 lowcor = remove_high_tfidf(clean_data,"text",0.1)[0]
 lowid = remove_high_tfidf(clean_data,"text",0.1)[1]
 ldal = lda_model(lowcor,lowid,25 )
 viz2 = visualize(ldal,corpus,id2word,"mmds",1,"pemilul6")
-
+"""
 wd = wordcloud_maker(hastag,"Set1")
 #vish = visualize(lda,corpus,id2word,"mmds",10,"normal")
-
-
-# THE DATASET NOT LEMMATIZE.TRY TO USE SPARKNLP FOR THAT
-# REMEMBER TO SAVE THE MODEL USING gensim.save()
 

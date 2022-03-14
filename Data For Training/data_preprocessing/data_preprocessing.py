@@ -60,6 +60,7 @@ def remove_stopwords(dataframe, column: str, lang = "indonesian"):
     """
     stop = stopwords.words({lang})
     data = dataframe[column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop]))
+    data = data.drop_duplicates()
     return data.to_frame(name=column)
 
 def write_json(filename:str,dataframe):
@@ -68,9 +69,16 @@ def write_json(filename:str,dataframe):
 
 
 
-df = load_data("indihome.xlsx")
-df2 = cleaning_data(df,"berita",False)
-df3 = remove_stopwords(df2,"berita")
-df4 = remove_username(df3,"berita")
-df4.rename(columns={"berita":"text"},inplace=True)
-write_json("news",df4)
+df = load_data("Book1.xlsx")
+df3 = remove_username(df,"text")
+df4 = remove_stopwords(df3,"text","indonesian")
+df5 = cleaning_data(df4,"text",False)
+df6 = df5.replace({"biznet":"",
+                   "indihome":"",
+                   "indosat":"",
+                   "smartfren":"",
+                   "first media":"",
+                   "\_":"",
+                   "myrepublic":"",
+                   "firstmedia":""},regex=True)
+write_json("data3",df6)
