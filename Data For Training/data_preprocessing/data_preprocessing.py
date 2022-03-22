@@ -81,4 +81,4 @@ df6 = df5.replace({"biznet":"",
                    "\_":"",
                    "myrepublic":"",
                    "firstmedia":""},regex=True)
-write_json("data3",df6)
+write_json("data4",df6)

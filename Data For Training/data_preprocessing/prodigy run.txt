@@ -1,7 +1,1 @@
-python -m prodigy textcat.manual sentiment "C:\Users\W I N D O W S\PycharmProjects\Thesis\ScrapingData\data_preprocessing\data.json" --loader json --label Neg,Pos,Net
-
-TOO MANY EXTRACT TO FOR ONLY 200
-
-python -m prodigy textcat.manual sentiment2 "C:\Users\W I N D O W S\PycharmProjects\Thesis\ScrapingData\data_preprocessing\data2.json" --loader json --label Neg,Pos,Net
-
-python -m prodigy textcat.manual sentiment3 "C:\Users\W I N D O W S\PycharmProjects\Thesis\ScrapingData\data_preprocessing\data3.json" --loader json --label Neg,Pos,Net
+python -m prodigy textcat.manual sentiment4 "C:\Users\W I N D O W S\PycharmProjects\Thesis\Data For Training\data_preprocessing\data4.json" --loader json --label Neg,Pos,Net
