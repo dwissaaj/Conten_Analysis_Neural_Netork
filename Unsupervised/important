@@ -1,0 +1,7 @@
+1.Load the Data
+2.Remove username
+3.Clean the data
+4.Remove Stopwords
+5.Tokenize
+6.Change id to word
+7.Create a corpus

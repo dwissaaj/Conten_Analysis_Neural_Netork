@@ -1,1 +1,0 @@
-python -m prodigy textcat.manual sentiment4 "C:\Users\W I N D O W S\PycharmProjects\Thesis\Data For Training\data_preprocessing\data4.json" --loader json --label Neg,Pos,Net
