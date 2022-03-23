@@ -15,3 +15,4 @@ dfg = df.groupby('label').count()
 fig = px.bar(dfg,x="text",title='Distribution')
 
 
+#
