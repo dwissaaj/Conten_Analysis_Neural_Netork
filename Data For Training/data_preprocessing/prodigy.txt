@@ -1,0 +1,2 @@
+Run this on terminal when annotated the dataset
+python -m prodigy textcat.manual topclass "C:\Users\W I N D O W S\PycharmProjects\Thesis\Data For Training\data_preprocessing\ig_dat.json" --loader json --label krit,faq,sar,neg,pos,net
