@@ -3,16 +3,15 @@ import pandas as pd
 from nltk.corpus import stopwords
 
 
-class functions():
-    def load_data(self,file):
+class functions:
+    def load_data(self,file:str):
         """
         Loading a excel file
 
         :param file: File Target
         """
 
-
-        data = pd.read_excel(file)
+        data = pd.read_excel(f'{file}')
         data = data.astype(str).apply(lambda x: x.str.encode('ascii', 'ignore').str.decode('ascii'))
         return data
 
@@ -84,4 +83,6 @@ class functions():
         with open(f'{filename}.json', 'w') as f:
             f.write(dataframe.to_json(orient="records", lines=False))
 
-functions.write_json()
+
+    def printsome(self,word:str):
+        print(word)
