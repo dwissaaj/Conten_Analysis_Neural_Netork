@@ -1,8 +1,4 @@
-# NLP Model
- 
- Create Model For NLP Task
-
-# Conten_Analysis_Neural_Netork
+# Conten Analysis Neural Netork
 Hi I am Dwi Setyo Aji from Indonesia.Currently I am doing my research on bachelor degree at UPN Veteran Jawa Timur Communication Science.You will be confused why a communication student creating Artificial intelligence,let me explain in a little bit.
 Laswell in Littlejohn (2011:334) define "Communication is Who, Says What, In Which Channel, To Whom, With What Effect".
 To understand I do this because the word of "Says What".Message is very crucial in Communication especially in corporate.We are focusing the text message and only analyze that object. This method called "Content analysis" where is we analyse the content of message,in this scenario is the text. We already encountered
