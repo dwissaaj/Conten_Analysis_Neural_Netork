@@ -1,0 +1,20 @@
+1.Terkait routing apakah front end yg nentuin kemana kemana and how to add new page
+petanyaan floatin action button
+2.Data yg dimunculin di cart itu hardcoded nah yg ngurusun request dan fetch data dari server - front end job testing qa and back end
+belajar fecth consume api https://www.adoptapet.com/public/apis/pet_list.html
+3.apa itu jenkins qa back end dev ops or front end jest library
+4.apakah mui dipakai di react atau standar industri?
+apakah login form yang push dari front end pakai fetch yang di target value get and post update delete
+apakah strapi terhitung back end? nest js mvc 
+apaka penting belajar nodejs dlu baru strapi?
+sqlite pada strapi itu tersimpan di file offline,nah berarti kerjaan beackend untuk push ke hosting?
+
+card dan search adalah child
+1.state pindah ke app.js
+2.incremenet pindah ke app.js transfer state ke search and cart
+3.keyword implementasi 
+
+seperate of consent mvc 
+App.js
+<CartCard count={setCount} />
+<Search count={count} />
